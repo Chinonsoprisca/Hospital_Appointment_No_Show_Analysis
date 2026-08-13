@@ -59,7 +59,7 @@ Data cleaning was done using SQL.
 
 NOTE: In a work setting, there must be discussions with the data team or managerary officer before deleting any row or information from the data base. I went ahead and deleted because it is a personal project and the data is from open source.
 
-```Data cleaning with SQL
+```SQL
 CREATE DATABASE healthcare
 
 SELECT * FROM hospital_appointments
