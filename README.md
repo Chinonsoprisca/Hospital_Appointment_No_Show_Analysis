@@ -14,8 +14,6 @@ Sales Performance Analysis for a Retail Store
 
 [Exploratory Data Analysis](#exploratory-data-analysis)
 
-[Data Analysis](#data-analysis)
-
 [Data Visualization](#data-visualization)
 
 [Finding and Recommendation](#finding-and-recommendation)
@@ -25,27 +23,25 @@ Sales Performance Analysis for a Retail Store
 
 ### Project Overview
 ---
+This is a personal project that i carried out with a hospital appointment No_show dataset. The data contained 110,527 rows and 14 columns before cleaning.
+
 In this project, I am tasked with analysing sales performance of a retail store. it involves exploring sales data to uncover key insights, such as top-selling products, regional performance, and monthly sales trends. The goal is to produce an interactive Power BI dashboard that highlights these findings. 
 
 ### Data Source
 ---
-The data used is Lita_Capstone_Dataset (SalesData), which was shared by Ladies In Tech Africa (LITA) through LMS, to be downloaded by her enrolled Data Analysis Students for the Lita_Capstone_Project.
-
+I downloaded the Medical appointment No_show data from Kaggle.com. 
 ### Tools Used
 ---
-- Microsoft Excel 
+-  SQL - Structured Query Language for Querying of Data
   1. For Data Cleaning
   2. For Analysis
   3. For Visualization
-     
-- SQL - Structured Query Language for Querying of Data
-
+      
 - Power BI - Power Business Intelligence for Data Visualization
 
 - Github for
   1. Portfolio Building
-  2. Project Submission 
-
+  
 ### Data Cleaning and Preparations
 ---
 Data cleaning was done using SQL. 
@@ -138,17 +134,6 @@ KPI
 - Which neighbourhood has the heighest risk of missing appointment (No_show)?
 - Patients risk scoring (patients that are likely going to miss appointments)?
 Created a predictive Risk_tier View using CTEs and table functions.
-
-### Data Analysis
----
-
-![Screenshot 2024-11-03 231333](https://github.com/user-attachments/assets/7969f572-3a5e-4919-b970-dad481c712cf)
-
-![Screenshot 2024-11-03 224839](https://github.com/user-attachments/assets/ccebd50d-f171-4da4-948c-8fefb1697206)
-
-![Screenshot 2024-11-03 224744](https://github.com/user-attachments/assets/3998b33f-53b0-4b12-aa97-30776da28bdf)
-
-![Screenshot 2024-11-03 224726](https://github.com/user-attachments/assets/0f080013-7880-45b8-b95c-483ccde05889)
 
 
 ```SQL
