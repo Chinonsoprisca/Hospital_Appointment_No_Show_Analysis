@@ -24,12 +24,14 @@ Sales Performance Analysis for a Retail Store
 ### Project Overview
 ---
 This is a personal project that i carried out with a hospital appointment No_show dataset. The data contained 110,527 rows and 14 columns before cleaning.
+The goal of this project is to discover why patients miss their scheduled appointments. The first step was to understand the data and defining each columns. e.g understand the difference between ScheduleDay column and AppointmentDay column. Schedule day is simply the day/date that the appointment was booked while Appointment day is the actual day that the patient is supposed to meet with the health practitioner. Also when the column No_show is "yes", it simply meant that the patient didnt show up for the appointment, while "no" means that the patient came for their scheduled appointment.  
+
 
 In this project, I am tasked with analysing sales performance of a retail store. it involves exploring sales data to uncover key insights, such as top-selling products, regional performance, and monthly sales trends. The goal is to produce an interactive Power BI dashboard that highlights these findings. 
 
 ### Data Source
 ---
-I downloaded the Medical appointment No_show data from Kaggle.com.(https://www.kaggle.com/datasets/joniarroba/noshowappointments)
+I downloaded the Medical appointment No_show data from Kaggle (https://www.kaggle.com/datasets/joniarroba/noshowappointments).
 ### Tools Used
 ---
 -  SQL - Structured Query Language for Querying of Data
