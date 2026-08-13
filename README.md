@@ -42,7 +42,7 @@ Understanding these variables and their relationships provided the foundation fo
 
 ### Data Source
 ---
-The Medical Appointment No-Show dataset was downloaded from Kaggle (https://www.kaggle.com/datasets/joniarroba/noshowappointments) and used for this project. The original dataset contained 110,527 rows and 14 columns before data cleaning and preparation.
+The Medical Appointment No-Show dataset was downloaded from Kaggle(https://www.kaggle.com/datasets/joniarroba/noshowappointments) and used for this project. The original dataset contained 110,527 rows and 14 columns before data cleaning and preparation.
 
 ### Tools Used
 ---
