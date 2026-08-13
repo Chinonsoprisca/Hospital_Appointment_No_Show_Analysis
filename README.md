@@ -145,8 +145,7 @@ Key Performance Indicators (KPIs)
 - Overall No-Show Rate (%)
 - Average Lead Time
 
-Key Questions
-The analysis sought to answer the following questions:
+Key Questions that the analysis sought to answer:
 - What percentage of patients did not show up for their scheduled appointments?
 - Does the day of the week affect appointment no-show rates?
 - Does appointment lead time influence the likelihood of a no-show?
