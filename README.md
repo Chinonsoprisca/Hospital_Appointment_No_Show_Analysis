@@ -29,7 +29,7 @@ In this project, I am tasked with analysing sales performance of a retail store.
 
 ### Data Source
 ---
-I downloaded the Medical appointment No_show data from Kaggle.com. 
+I downloaded the Medical appointment No_show data from Kaggle.com.(https://www.kaggle.com/datasets/joniarroba/noshowappointments)
 ### Tools Used
 ---
 -  SQL - Structured Query Language for Querying of Data
