@@ -48,21 +48,33 @@ The data used is Lita_Capstone_Dataset (SalesData), which was shared by Ladies I
 
 ### Data Cleaning and Preparations
 ---
-This involves identifying data errors and then changing, updating or removing data to correct them.
-1. Data loading and Inspection
-2. Verifying blank cells
-3. Data Cleaning and Formatting
+Data cleaning was done using SQL. 
+1. I first loaded the CSV file into SQL Server
+2. Changed inconsistent column names and data types
+3. cleaned 2 date columns in multiple steps. Created new columns, updated the new columns with cleaned dates, deleted the old columns and renamed the new ones with the old name.
+4. checked data validity e.g there shoudnt be a negative age value
+5. checked for null and droped the rows with null patientId
+6. Added a new column (LeadTime) for the interval between schedule date and actual appointment date
+7. checked leadtime validity and removed 5 rows with negative lead time value.
+
+NOTE: In a work setting, there must be discussions with the data team or managerary officer before deleting any row or information from the data base. I went ahead and deleted because it is a personal project and the data is from open source.
 
 ### Exploratory Data Analysis
 ---
-- What is the total sales by:
-   1. Product
-   2. Region and
-   3. Month
-- Calculate Metrics such as:
-   1. Average sales per product
-   2. Total revenue by region
-      using Excel formulas
+KPI
+1. Total number of appointments
+2. Total number of No_shows
+3. Overall percentage of No_shows
+4. Average lead time
+
+- What is the overall percentage(rate) of patients that didnt show up for their appointment?
+- Does the day of the week affect appointment No_show?
+- Does appointment lead time have an effect on appointment No_shows?
+- Does age affect appointment No_shows?
+- What is the effect of SMS reminder on No_shows?
+- Which neighbourhood has the heighest risk of missing appointment (No_show)?
+- Patients risk scoring (patients that are likely going to miss appointments)?
+Created a predictive Risk_tier View using CTEs and table functions.
 
 ### Data Analysis
 ---
@@ -77,69 +89,170 @@ This involves identifying data errors and then changing, updating or removing da
 
 
 ```SQL
+---------------EXPLORATORY DATA ANALYSIS-----------------------------
+----1: What is the overall percentage(rate) of patients that didnt show up for their appointment?-----
 
-CREATE DATABASE LitaProject1
+SELECT No_show, COUNT(No_show) AS TotalCount,
+ROUND(COUNT(No_show) * 100.0 / (SELECT COUNT(No_show) FROM hospital_appointments), 2) AS PercentageCount
+FROM hospital_appointments
+GROUP BY No_show
+ORDER BY TotalCount DESC
 
-SELECT * FROM [dbo].[ProjectSalesData]
+----2: Does the day of the week affect appointment No_show?
+SELECT DATENAME(WEEKDAY, AppointmentDay) AS AppointmentDayName, COUNT(AppointmentDay) AS TotalAppointments,
+SUM(CASE WHEN No_show = 'Yes' THEN 1 ELSE 0 END) AS No_shows,
+ROUND(SUM(CASE WHEN No_show = 'Yes' THEN 1 ELSE 0 END) * 100.0 / COUNT(AppointmentDay), 2) AS No_show_rate
+FROM hospital_appointments
+GROUP BY DATENAME(WEEKDAY, AppointmentDay)
+ORDER BY No_show_rate DESC
 
----Retrieve the total sales for each product category-----
-SELECT Product, SUM(Sales) AS SalesPerProduct
-FROM ProjectSalesData 
-GROUP BY Product
-ORDER BY 2 DESC
+----3: Does appointment lead time have an effect on appointment No_shows?
+SELECT CASE WHEN LeadTime = 0 THEN 'Same Day'
+			WHEN LeadTime BETWEEN 1 AND 3 THEN 'Short (1-3 Days)'
+			WHEN LeadTime BETWEEN 4 AND 7 THEN 'Within a week'
+			ELSE 'Long (8+ days)'
+		END AS LeadTimeBucket,
+		COUNT (AppointmentDay) AS TotalAppointment,
+		ROUND(SUM(CASE WHEN No_show = 'Yes' THEN 1 ELSE 0 END) * 100.0 / COUNT(AppointmentDay), 2) AS No_show_rate
+FROM hospital_appointments
+GROUP BY CASE WHEN LeadTime = 0 THEN 'Same Day'
+			WHEN LeadTime BETWEEN 1 AND 3 THEN 'Short (1-3 Days)'
+			WHEN LeadTime BETWEEN 4 AND 7 THEN 'Within a week'
+			ELSE 'Long (8+ days)'
+		END
+ORDER BY No_show_rate DESC                                
+                                                ---- Or use CTEs (Common Table Expression)----
 
----Find the number of sales transactions in each region-----
-SELECT Region, COUNT(Sales) AS TransactionsPerRegion
-FROM ProjectSalesData 
-GROUP BY Region
-
----Find the highest-selling product by total sales value------
-SELECT MAX(Product) AS HighestSellingProduct, SUM(Sales) AS TotalSales
-FROM ProjectSalesData
-
----Calculate total revenue per product----
-SELECT Product, SUM(Sales) AS TotalRevenue
-FROM ProjectSalesData
-GROUP BY Product
-
----Calculate monthly sales totals for the current year-----
-SELECT MONTH(OrderDate) AS Month, SUM(Sales) AS CurrentYearMonthlySales
-FROM ProjectSalesData 
-WHERE
-YEAR(OrderDate) = YEAR(GETDATE())
-GROUP BY MONTH(OrderDate)
-ORDER BY 1 ASC
-
----Find the top 5 customers by total purchase amount----
-SELECT TOP 5 Customer_Id, SUM(Sales) AS TotalPurchaseAmount
-FROM ProjectSalesData
-GROUP BY Customer_Id
-ORDER BY TotalPurchaseAmount DESC
-
----Calculate the percentage of total sales contributed by each region---
-SELECT Region, SUM(Sales) AS TotalSales, 
-(CAST (SUM(Sales) AS FLOAT) /  (SELECT SUM(Sales) FROM ProjectSalesData) * 100) AS TotalSalesPercentage
-FROM ProjectSalesData
-GROUP BY Region
-ORDER BY TotalSalesPercentage DESC  ------------OR----------
-
-SELECT Region, SUM(Sales) AS TotalSales, 
-(SUM(Sales)  * 100.0 /  (SELECT SUM(Sales) FROM ProjectSalesData)) AS TotalSalesPercentage
-FROM ProjectSalesData
-GROUP BY Region
-ORDER BY TotalSalesPercentage DESC
-
----Identify products with no sales in the last quarter------
-SELECT Product FROM [dbo].[ProjectSalesData]
-WHERE
-Product NOT IN(
-    SELECT Product FROM [dbo].[ProjectSalesData]
-    WHERE OrderDate >= DATEADD(qq,DATEDIFF(QUARTER,0,GETDATE())-1,0)
-    AND OrderDate <= DATEADD(qq,DATEDIFF(QUARTER,0,GETDATE()),0)
-    GROUP BY Product
+WITH LeadTimeGroups AS (
+    SELECT *,
+        CASE 
+            WHEN LeadTime = 0 THEN 'Same Day'
+            WHEN LeadTime BETWEEN 1 AND 3 THEN 'Short (1-3 Days)'
+            WHEN LeadTime BETWEEN 4 AND 7 THEN 'Within a week'
+            ELSE 'Long (8+ days)'
+        END AS LeadTimeBucket
+    FROM hospital_appointments
 )
-GROUP BY Product
+
+SELECT 
+    LeadTimeBucket,
+    COUNT(AppointmentDay) AS TotalAppointments,
+	SUM(CASE WHEN No_show = 'Yes' THEN 1 ELSE 0 END) AS Total_No_shows,
+    CAST(
+        SUM(CASE WHEN No_show = 'Yes' THEN 1 ELSE 0 END) * 100.0 
+        / COUNT(AppointmentDay) AS DECIMAL (5,2)
+    ) AS No_show_rate
+FROM LeadTimeGroups
+GROUP BY LeadTimeBucket
+ORDER BY No_show_rate DESC;
+
+----4: Does age affect appointment No_shows?
+WITH AgeGroup AS(
+				SELECT *,
+				CASE WHEN Age BETWEEN 0 AND 12 THEN 'Child'
+					 WHEN Age BETWEEN 13 AND 19 THEN 'Teenager'
+					 WHEN Age BETWEEN 20 AND 39 THEN 'Young Adult'
+					 WHEN Age BETWEEN 40 AND 59 THEN 'Adult'
+					 ELSE 'Older Adult'
+				END AS AgeBucket
+FROM hospital_appointments)
+SELECT AgeBucket,
+COUNT (AppointmentDay) AS TotalAppointment,
+ROUND(SUM(CASE WHEN No_show = 'Yes' THEN 1 ELSE 0 END) * 100.0 / COUNT(AppointmentDay), 2) AS No_show_rate
+FROM AgeGroup
+GROUP BY AgeBucket
+ORDER BY No_show_rate DESC
+
+----5: What is the effect of SMS reminder on No_shows?
+SELECT CASE WHEN SMS_received = 1 THEN 'SMS'
+			ELSE 'No SMS'
+			END AS SMS_status,
+COUNT (AppointmentDay) AS TotalAppointment,
+ROUND(SUM(CASE WHEN No_show = 'Yes' THEN 1 ELSE 0 END) * 100.0 / COUNT(AppointmentDay), 2) AS No_show_rate
+FROM hospital_appointments
+GROUP BY CASE WHEN SMS_received = 1 THEN 'SMS'
+			ELSE 'No SMS'
+			END
+ORDER BY No_show_rate DESC
+
+----6: Which neighbourhood has the heighest risk of missing appointment (No_show)?
+SELECT TOP 20 Neighbourhood, COUNT(*) AS TotalAppointments,
+ROUND(SUM(CASE WHEN No_show = 'Yes' THEN 1 ELSE 0 END) * 100 / COUNT(*), 2) AS No_show_rate,
+RANK() OVER (ORDER BY ROUND(SUM(CASE WHEN No_show = 'Yes' THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) DESC) AS Risk_rank
+FROM hospital_appointments
+GROUP BY Neighbourhood
+HAVING COUNT(*) >= 100
+ORDER BY Risk_rank ASC
+
+----7: Patients risk scoring (patients that are likely going to miss appointments)?
+SELECT
+	PatientId,
+	AppointmentID,
+	AppointmentDay,
+	No_show,
+COUNT(*) OVER(PARTITION BY PatientId 
+			  ORDER BY AppointmentDay
+			  ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING) AS Previous_appointments,
+SUM(CASE WHEN No_show = 'Yes' THEN 1 ELSE 0 END) 
+		 OVER(PARTITION BY PatientId 
+			  ORDER BY AppointmentDay
+			  ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING) AS Previous_no_shows
+FROM hospital_appointments
+ORDER BY PatientId, AppointmentDay
+
+----8: Created a view with our findings
+
+CREATE VIEW View_AppointmentRisk AS
+WITH Patient_history AS(
+SELECT PatientId,
+	   AppointmentId,
+	   AppointmentDay,
+	   Neighbourhood,
+	   LeadTime,
+	   SMS_received,
+	   Scholarship,
+	   No_show,
+	   COUNT(*) OVER(
+				PARTITION BY PatientId
+				ORDER BY AppointmentDay
+				ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING) AS Previous_appointments,
+	   SUM(CASE WHEN No_show = 'Yes' THEN 1 ELSE 0 END) OVER(
+				PARTITION BY PatientId
+				ORDER BY AppointmentDay
+				ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING) AS Previous_no_shows
+FROM hospital_appointments
+),
+Patient_rate AS(
+SELECT *,
+		CAST(Previous_no_shows * 1.0 / NULLIF(Previous_appointments, 0) AS DECIMAL (5,2)) 
+		AS Previous_no_shows_rate
+FROM Patient_history
+)
+SELECT PatientId,
+	   AppointmentId,
+	   AppointmentDay,
+	   Neighbourhood,
+	   LeadTime,
+	   Previous_appointments,
+	   Previous_no_shows,
+	   Previous_no_shows_rate,
+	   CASE WHEN Previous_appointments = 0 THEN 'New Patient - Monitor'
+			WHEN Previous_no_shows_rate >= 0.5
+				 OR LeadTime >= 8 THEN 'High Risk'
+			WHEN Previous_no_shows_rate >= 0.2
+				 OR LeadTime BETWEEN 4 AND 7 THEN 'Medium Risk'
+			ELSE 'Low Risk'
+		END AS Risk_tier
+FROM Patient_rate
+----------------------------------------------------------------------------------------
+
+SELECT * FROM hospital_appointments
+
+SELECT * FROM View_AppointmentRisk	   
+	
 ```
+
+
 
 ### Data Visualization
 ---
