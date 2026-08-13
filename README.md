@@ -59,6 +59,69 @@ Data cleaning was done using SQL.
 
 NOTE: In a work setting, there must be discussions with the data team or managerary officer before deleting any row or information from the data base. I went ahead and deleted because it is a personal project and the data is from open source.
 
+```Data cleaning with SQL
+CREATE DATABASE healthcare
+
+SELECT * FROM hospital_appointments
+
+---------------------------------------------------------
+---DATA CLEANING
+---------------------------------------------------------
+
+--- Changed column names and data type-----------
+sp_rename 'hospital_appointments.Hipertension', 'Hypertension', 'COLUMN';
+
+sp_rename 'hospital_appointments.Handcap', 'No_of_disability', 'COLUMN';
+
+ALTER TABLE hospital_appointments
+ALTER COLUMN No_show VARCHAR (4) 
+
+--- Cleaned date columns -------------------Created new columms for dates----
+ALTER TABLE hospital_appointments
+ADD ScheduledDay_temp DATETIME,
+	AppointmentDay_temp DATE;
+			                           ------Filled the new columns with cleaned dates-----  
+UPDATE hospital_appointments
+SET ScheduledDay_temp = TRY_CONVERT(DATETIME, REPLACE(REPLACE(ScheduledDay, 'T', ' '), 'Z', ''), 120),
+    AppointmentDay_temp = TRY_CONVERT(DATE, REPLACE(REPLACE(AppointmentDay, 'T', ' '), 'Z', ''), 120);
+	                                  --------Droped the old date columns------
+ALTER TABLE hospital_appointments
+DROP COLUMN ScheduledDay, AppointmentDay;
+                                     ---------Renamed the new cleaned columns-------
+SP_RENAME 'hospital_appointments.ScheduledDay_temp', 'ScheduledDay', 'COLUMN';
+
+SP_RENAME 'hospital_appointments.AppointmentDay_temp', 'AppointmentDay', 'COLUMN';
+
+                                     ---------Checked if the age column is clean--------
+SELECT MIN(Age), MAX(Age)
+FROM hospital_appointments
+                                     ---------Checked null values-----
+SELECT COUNT(*) AS Null_Count
+FROM hospital_appointments
+WHERE PatientId IS NULL;
+
+SELECT * FROM hospital_appointments
+WHERE PatientId IS NULL;
+                                     --------Cleaned the null values in PatientId as it's the primary key---
+DELETE FROM hospital_appointments 
+WHERE PatientId IS NULL
+									 --------Added a new column for schedule and appointment Date interval---- 
+ALTER TABLE hospital_appointments
+ADD LeadTime AS DATEDIFF(DAY, CAST(ScheduledDay AS DATE), AppointmentDay)
+
+                                     --------Checked data validity for the new column-----
+SELECT MIN(LeadTime), MAX(LeadTime)
+FROM  hospital_appointments
+
+SELECT * FROM hospital_appointments
+WHERE LeadTime < 0
+                                     --------Removed 5 rows with negative leadtime value-----
+DELETE FROM hospital_appointments
+WHERE LeadTime < 0
+```
+
+
+
 ### Exploratory Data Analysis
 ---
 KPI
