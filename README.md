@@ -58,16 +58,19 @@ The Medical Appointment No-Show dataset was downloaded from Kaggle(https://www.k
   
 ### Data Cleaning and Preparations
 ---
-Data cleaning was done using SQL. 
-1. I first loaded the CSV file into SQL Server
-2. Changed inconsistent column names and data types
-3. cleaned 2 date columns in multiple steps. Created new columns, updated the new columns with cleaned dates, deleted the old columns and renamed the new ones with the old name.
-4. checked data validity e.g there shoudnt be a negative age value
-5. checked for null and droped the rows with null patientId
-6. Added a new column (LeadTime) for the interval between schedule date and actual appointment date
-7. checked leadtime validity and removed 5 rows with negative lead time value.
+Data cleaning and preparation were carried out using SQL Server.
 
-NOTE: In a work setting, there must be discussions with the data team or managerary officer before deleting any row or information from the data base. I went ahead and deleted because it is a personal project and the data is from open source.
+The following steps were performed:
+1. Loaded the CSV file into SQL Server.
+2. Standardized column names and data types to ensure consistency.
+3. Cleaned the two date columns through multiple steps. I created temporary columns with the appropriate date data types, populated them with the cleaned dates, removed the original columns, and renamed the temporary columns using the original column names.
+4. Checked data validity, including identifying invalid values such as negative ages.
+5. Checked for NULL values and removed rows with missing PatientId values, as PatientId was required as the primary key.
+6. Created a new LeadTime column to calculate the interval between the scheduled date and the actual appointment date.
+7. Validated the LeadTime values and removed five records with negative lead times.
+
+Note: In a real-world work setting, deleting records or modifying source data should be discussed and approved by the relevant data team, manager, or data governance officer. For this personal project, I made these decisions because the dataset was obtained from an open-source platform and was being used for learning and portfolio purposes.
+
 
 ```SQL
 CREATE DATABASE healthcare
@@ -134,21 +137,28 @@ WHERE LeadTime < 0
 
 ### Exploratory Data Analysis
 ---
-KPI
-1. Total number of appointments
-2. Total number of No_shows
-3. Overall percentage of No_shows
-4. Average lead time
+The exploratory analysis focused on understanding appointment attendance patterns and identifying factors associated with medical appointment no-shows.
 
-- What is the overall percentage(rate) of patients that didnt show up for their appointment?
-- Does the day of the week affect appointment No_show?
-- Does appointment lead time have an effect on appointment No_shows?
-- Does age affect appointment No_shows?
-- What is the effect of SMS reminder on No_shows?
-- Which neighbourhood has the heighest risk of missing appointment (No_show)?
-- Patients risk scoring (patients that are likely going to miss appointments)?
-Created a predictive Risk_tier View using CTEs and table functions.
+Key Performance Indicators (KPIs)
+- Total Number of Appointments
+- Total Number of No-Shows
+- Overall No-Show Rate (%)
+- Average Lead Time
 
+Key Questions
+The analysis sought to answer the following questions:
+- What percentage of patients did not show up for their scheduled appointments?
+- Does the day of the week affect appointment no-show rates?
+- Does appointment lead time influence the likelihood of a no-show?
+- Does patient age affect appointment attendance?
+- What effect do SMS reminders have on no-show rates?
+- Which neighbourhoods have the highest no-show rates?
+- Can patients be classified based on their likelihood of missing an appointment?
+- Patient Risk Classification
+
+As part of the analysis, I created a View_AppointmentRisk using CTEs and window functions in SQL Server.
+
+The view uses a patient's previous appointment history, previous no-shows, and current appointment lead time to assign a Risk_Tier, helping identify appointments that may require additional follow-up or reminders.
 
 ```SQL
 ---------------EXPLORATORY DATA ANALYSIS-----------------------------
