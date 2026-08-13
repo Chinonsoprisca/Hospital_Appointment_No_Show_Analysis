@@ -23,15 +23,26 @@ Sales Performance Analysis for a Retail Store
 
 ### Project Overview
 ---
-This is a personal project that i carried out with a hospital appointment No_show dataset. The data contained 110,527 rows and 14 columns before cleaning.
-The goal of this project is to discover why patients miss their scheduled appointments. The first step was to understand the data and defining each columns. e.g understand the difference between ScheduleDay column and AppointmentDay column. Schedule day is simply the day/date that the appointment was booked while Appointment day is the actual day that the patient is supposed to meet with the health practitioner. Also when the column No_show is "yes", it simply meant that the patient didnt show up for the appointment, while "no" means that the patient came for their scheduled appointment.  
+This personal project analyses a hospital appointment no-show dataset to identify factors that may influence medical appointment no-show rates and generate insights that could support better healthcare decision-making.
 
+The original dataset contained 110,517 rows and 15 columns after cleaning and preparation.
 
-In this project, I am tasked with analysing sales performance of a retail store. it involves exploring sales data to uncover key insights, such as top-selling products, regional performance, and monthly sales trends. The goal is to produce an interactive Power BI dashboard that highlights these findings. 
+The first step of the project was to understand the dataset and clearly define each variable. For example, I examined the difference between ScheduledDay and AppointmentDay:
+
+- ScheduledDay — the date when the appointment was booked.
+- AppointmentDay — the date when the patient was expected to attend the appointment.
+
+I also clarified the meaning of the No_show variable:
+
+- Yes — the patient did not attend the scheduled appointment.
+- No — the patient attended the appointment.
+
+Understanding these variables and their relationships provided the foundation for the subsequent data cleaning, SQL analysis, risk classification, and Power BI visualization carried out in the project.
+
 
 ### Data Source
 ---
-I downloaded the Medical appointment No_show data from Kaggle (https://www.kaggle.com/datasets/joniarroba/noshowappointments).
+The Medical Appointment No-Show dataset was downloaded from Kaggle (https://www.kaggle.com/datasets/joniarroba/noshowappointments) and used for this project. The original dataset contained 110,527 rows and 14 columns before data cleaning and preparation.
 ### Tools Used
 ---
 -  SQL - Structured Query Language for Querying of Data
@@ -316,10 +327,8 @@ SELECT * FROM View_AppointmentRisk
 ![Power BI Visual](https://github.com/user-attachments/assets/2a424d7a-cac5-454c-8fe0-40e6f2578625)
 
 ### Finding and Recommendation
-- South had the highest sales in both sales year (2023 and 2024).
-- West had lowest sales total.
-- Shoes had the highest sales in both sales year and Socks had lowest sales.
-- February is the most productive year in both sales year.
+- One of the factors that I identified was lead time. The longer the lead time, the higher the risk of a patient not showing up.
+Lead time is simply the interval between the day an appointment was scheduled and the actual appointment day. 
 
 - More goods should be supplied to the South since it generates more revenue, this will help to increase sales turnover, more branches can also be established in the South.
 - Different brands of shoes should be supplied to all regions, because customers seem to purchase more of it, and their purchasing interest should be sustained with multi-brand choice.
