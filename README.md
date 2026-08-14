@@ -332,14 +332,14 @@ SELECT * FROM View_AppointmentRisk
 One of the key factors identified was lead time. The analysis showed that longer lead times were associated with higher no-show rates.
 Lead time refers to the interval between the date an appointment was scheduled and the actual appointment date. A longer waiting period may give patients more time to feel better, seek care elsewhere, or become unavailable by the time of their appointment.
 
-Recommendation:
+- Recommendation:
 The hospital should explore ways to reduce appointment lead times where possible. For appointments that require longer waiting periods, timely reminders and follow-up could also help reduce missed appointments.
 
 2. Age and No-Show Rates
 Teenagers and young adults recorded the highest no-show rates in the analysis.
 This may be related to lifestyle and other factors that could make it easier for younger patients to forget or deprioritize appointments. It is also possible that some patients feel better before their appointment, particularly when there is a long gap between scheduling and the appointment date, and therefore decide not to attend.
 
-Recommendation:
+- Recommendation:
 Consider targeted reminders and follow-up strategies for younger patients, particularly for appointments with longer lead times.
 
 3. Effect of SMS Reminders
