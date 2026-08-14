@@ -321,15 +321,13 @@ SELECT * FROM View_AppointmentRisk
 ### Data Visualization
 ---
 
-![Screenshot 2024-11-03 224816](https://github.com/user-attachments/assets/22e80175-5561-46b2-94fd-228622b87214)
+<img width="1513" height="861" alt="Screenshot 2026-08-14 130139" src="https://github.com/user-attachments/assets/f448d817-ee24-47cc-8f80-43a1b510bc3c" />
 
-![Screenshot 2024-11-03 224440](https://github.com/user-attachments/assets/2679ebaf-7922-445d-b229-07420d1d0e21)
+<img width="1536" height="918" alt="Screenshot 2026-08-14 130311" src="https://github.com/user-attachments/assets/955c86c3-1ac8-435a-9ecb-23a6cb6fd9b1" />
 
-![Screenshot 2024-11-03 224609](https://github.com/user-attachments/assets/6b286016-9469-4ff9-b91f-7616275f3045)
-
-![Power BI Visual](https://github.com/user-attachments/assets/2a424d7a-cac5-454c-8fe0-40e6f2578625)
 
 ### Finding and Recommendation
+---
 1. Appointment Lead Time
 One of the key factors identified was lead time. The analysis showed that longer lead times were associated with higher no-show rates.
 Lead time refers to the interval between the date an appointment was scheduled and the actual appointment date. A longer waiting period may give patients more time to feel better, seek care elsewhere, or become unavailable by the time of their appointment.
