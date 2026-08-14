@@ -359,7 +359,7 @@ The relatively small difference suggests that gender was not a major factor infl
 - Recommendation:
 Gender may not need to be a primary factor when designing appointment reminder or follow-up strategies. Resources could instead be focused on factors that showed stronger associations with no-shows, such as lead time and age.
 
-5.Neighbourhood had noticeable differences in appointment no-show rates. Some neighbourhoods recorded higher no-show rates than others, suggesting that location may be associated with appointment attendance patterns
+5. Neighbourhood had noticeable differences in appointment no-show rates. Some neighbourhoods recorded higher no-show rates than others, suggesting that location may be associated with appointment attendance patterns
 I ranked neighbourhoods based on their no-show rates, considering only neighbourhoods with at least 100 appointments to avoid drawing conclusions from areas with very small sample sizes.
 
 - Recommendation
