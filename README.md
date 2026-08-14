@@ -25,7 +25,7 @@ Sales Performance Analysis for a Retail Store
 ---
 This personal project analyses a hospital appointment no-show dataset to identify factors that may influence medical appointment no-show rates and generate insights that could support better healthcare decision-making.
 
-The original dataset contained 110,517 rows and 15 columns after cleaning and preparation.
+The original dataset contained 110,517 rows and 18 columns after cleaning and preparation.
 
 The first step of the project was to understand the dataset and clearly define each variable. For example, I examined the difference between ScheduledDay and AppointmentDay:
 
@@ -157,7 +157,7 @@ Key Questions that the analysis sought to answer:
 
 As part of the analysis, I created a View_AppointmentRisk using CTEs and window functions in SQL Server.
 
-The view uses a patient's previous appointment history, previous no-shows, and current appointment lead time to assign a Risk_Tier, helping identify appointments that may require additional follow-up or reminders.
+The view uses a patient's previous appointment history, previous no-shows, and current appointment lead time to assign a Risk_Tier. This type of risk classification could help healthcare teams identify patients who may need additional follow-up or reminders or follow-up before their appointments.
 
 ```SQL
 ---------------EXPLORATORY DATA ANALYSIS-----------------------------
@@ -337,10 +337,53 @@ SELECT * FROM View_AppointmentRisk
 ![Power BI Visual](https://github.com/user-attachments/assets/2a424d7a-cac5-454c-8fe0-40e6f2578625)
 
 ### Finding and Recommendation
-- One of the factors that I identified was lead time. The longer the lead time, the higher the risk of a patient not showing up.
-Lead time is simply the interval between the day an appointment was scheduled and the actual appointment day. 
+1. Appointment Lead Time
 
-- More goods should be supplied to the South since it generates more revenue, this will help to increase sales turnover, more branches can also be established in the South.
-- Different brands of shoes should be supplied to all regions, because customers seem to purchase more of it, and their purchasing interest should be sustained with multi-brand choice.
-- I suggest that more investigation should be carried out on the West store to know the cause of its low sales.
-- it could be that people don't wear Socks much, which causes the sales to be low. If the revenue is not more than the capital, I suggest it should be removed from the stores.
+One of the key factors identified was lead time. The analysis showed that longer lead times were associated with higher no-show rates.
+
+Lead time refers to the interval between the date an appointment was scheduled and the actual appointment date. A longer waiting period may give patients more time to feel better, seek care elsewhere, or become unavailable by the time of their appointment.
+
+Recommendation:
+The hospital should explore ways to reduce appointment lead times where possible. For appointments that require longer waiting periods, timely reminders and follow-up could also help reduce missed appointments.
+
+2. Age and No-Show Rates
+
+Teenagers and young adults recorded the highest no-show rates in the analysis.
+
+This may be related to lifestyle and other factors that could make it easier for younger patients to forget or deprioritize appointments. It is also possible that some patients feel better before their appointment, particularly when there is a long gap between scheduling and the appointment date, and therefore decide not to attend.
+
+Recommendation:
+Consider targeted reminders and follow-up strategies for younger patients, particularly for appointments with longer lead times.
+
+3. Effect of SMS Reminders
+
+In this analysis, patients who received SMS reminders did not appear to have a lower no-show rate. However, this finding should be interpreted carefully.
+
+SMS reminders were not necessarily sent to every patient. Patients with longer lead times were more likely to receive an SMS, while same-day appointments may not require or receive a reminder.
+
+Therefore, the analysis does not establish that SMS reminders are ineffective. The difference could partly be explained by the characteristics of the patients who received the reminders.
+
+Recommendation:
+The hospital could further evaluate the effectiveness of SMS reminders by comparing patients with similar appointment characteristics, particularly lead time, and considering a controlled or targeted reminder strategy.
+
+Key learning: An analytical finding should always be interpreted within the context of the underlying data and other influencing factors rather than viewed in isolation.
+
+4. Gender and No-Show Rates
+
+The analysis showed little difference in no-show rates between male and female patients.
+
+The relatively small difference suggests that gender was not a major factor influencing appointment attendance in this dataset.
+
+Recommendation:
+Gender may not need to be a primary factor when designing appointment reminder or follow-up strategies. Resources could instead be focused on factors that showed stronger associations with no-shows, such as lead time and age.
+
+5. Patient Risk Classification
+
+As part of the analysis, I created a View_AppointmentRisk using CTEs and window functions in SQL Server.
+
+The view uses a patient's previous appointment history, previous no-shows, and current appointment lead time to assign a Risk_Tier.
+
+This type of risk classification could help healthcare teams identify appointments that may require additional reminders or follow-up, allowing limited resources to be directed toward patients who may be more likely to miss their appointments.
+
+Overall recommendation:
+Rather than relying on a single factor, healthcare teams should consider a combination of patient history, lead time, age, and other relevant characteristics when developing strategies to reduce appointment no-shows.
