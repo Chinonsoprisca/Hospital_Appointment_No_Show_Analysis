@@ -19,7 +19,7 @@ Why patients miss their scheduled appointments?
 
 ### Project Overview
 ---
-This personal project analyses a hospital appointment no-show dataset to identify factors that may influence medical appointment no-show rates and generate insights that could support better healthcare decision-making.
+This personal project analyzes a hospital appointment no-show dataset to identify factors that may influence medical appointment no-show rates and generate insights that could support better healthcare decision-making.
 The original dataset contained 110,517 rows and 18 columns after cleaning and preparation.
 The first step of the project was to understand the dataset and clearly define each variable. For example, I examined the difference between ScheduledDay and AppointmentDay:
 
@@ -328,45 +328,36 @@ SELECT * FROM View_AppointmentRisk
 
 ### Finding and Recommendation
 ---
-1. Appointment Lead Time
-One of the key factors identified was lead time. The analysis showed that longer lead times were associated with higher no-show rates.
+1. Appointment Lead Time: One of the key factors identified was lead time. The analysis showed that longer lead times were associated with higher no-show rates.
 Lead time refers to the interval between the date an appointment was scheduled and the actual appointment date. A longer waiting period may give patients more time to feel better, seek care elsewhere, or become unavailable by the time of their appointment.
 
 - Recommendation:
 The hospital should explore ways to reduce appointment lead times where possible. For appointments that require longer waiting periods, timely reminders and follow-up could also help reduce missed appointments.
 
-2. Age and No-Show Rates
-Teenagers and young adults recorded the highest no-show rates in the analysis.
+2. Age and No-Show Rates: Teenagers and young adults recorded the highest no-show rates in the analysis.
 This may be related to lifestyle and other factors that could make it easier for younger patients to forget or deprioritize appointments. It is also possible that some patients feel better before their appointment, particularly when there is a long gap between scheduling and the appointment date, and therefore decide not to attend.
 
-- Recommendation:
-Consider targeted reminders and follow-up strategies for younger patients, particularly for appointments with longer lead times.
+- Recommendation: Consider targeted reminders and follow-up strategies for younger patients, particularly for appointments with longer lead times.
 
-3. Effect of SMS Reminders
-In this analysis, patients who received SMS reminders did not appear to have a lower no-show rate. However, this finding should be interpreted carefully.
+3. Effect of SMS Reminders: In this analysis, patients who received SMS reminders did not appear to have a lower no-show rate. However, this finding should be interpreted carefully.
 SMS reminders were not necessarily sent to every patient. Patients with longer lead times were more likely to receive an SMS, while same-day appointments may not require or receive a reminder.
 Therefore, the analysis does not establish that SMS reminders are ineffective. The difference could partly be explained by the characteristics of the patients who received the reminders.
 
-- Recommendation:
-The hospital could further evaluate the effectiveness of SMS reminders by comparing patients with similar appointment characteristics, particularly lead time, and considering a controlled or targeted reminder strategy.
+- Recommendation: The hospital could further evaluate the effectiveness of SMS reminders by comparing patients with similar appointment characteristics, particularly lead time, and considering a controlled or targeted reminder strategy.
 
 - Key learning: An analytical finding should always be interpreted within the context of the underlying data and other influencing factors rather than viewed in isolation.
 
-4. Gender and No-Show Rates
-The analysis showed little difference in no-show rates between male and female patients.
+4. Gender and No-Show Rates: The analysis showed little difference in no-show rates between male and female patients.
 The relatively small difference suggests that gender was not a major factor influencing appointment attendance in this dataset.
 
-- Recommendation:
-Gender may not need to be a primary factor when designing appointment reminder or follow-up strategies. Resources could instead be focused on factors that showed stronger associations with no-shows, such as lead time and age.
+- Recommendation: Gender may not need to be a primary factor when designing appointment reminder or follow-up strategies. Resources could instead be focused on factors that showed stronger associations with no-shows, such as lead time and age.
 
 5. Neighbourhood had noticeable differences in appointment no-show rates. Some neighbourhoods recorded higher no-show rates than others, suggesting that location may be associated with appointment attendance patterns
 I ranked neighbourhoods based on their no-show rates, considering only neighbourhoods with at least 100 appointments to avoid drawing conclusions from areas with very small sample sizes.
 
-- Recommendation
-The hospital could investigate the reasons behind higher no-show rates in specific neighbourhoods and consider targeted reminder or follow-up strategies where appropriate.
+- Recommendation: The hospital could investigate the reasons behind higher no-show rates in specific neighbourhoods and consider targeted reminder or follow-up strategies where appropriate.
 
-6. Patient Risk Classification
-As part of the analysis, I created a View_AppointmentRisk using CTEs and window functions in SQL Server.
+6. Patient Risk Classification: As part of the analysis, I created a View_AppointmentRisk using CTEs and window functions in SQL Server.
 The view uses a patient's previous appointment history, previous no-shows, and current appointment lead time to assign a Risk_Tier.
 This type of risk classification could help healthcare teams identify appointments that may require additional reminders or follow-up, allowing limited resources to be directed toward patients who may be more likely to miss their appointments.
 Rather than relying on a single factor, healthcare teams should consider a combination of patient history, lead time, age, and other relevant characteristics when developing strategies to reduce appointment no-shows.
